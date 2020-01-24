@@ -20,3 +20,8 @@ x axis：days (origin point is 2020-12-8)
 SIR model fittng:
 
 ![SIR模型](https://github.com/dai-pch/2019-nCoV-Fit/raw/master/result/sir-2020-01-24-1157.png)
+
+### 2020-01-25-02：07
+SIR model fittng:
+
+![SIR模型](https://github.com/dai-pch/2019-nCoV-Fit/raw/master/result/sir-2020-01-25-0207.png)
