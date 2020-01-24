@@ -354,6 +354,8 @@ def seir_fit2(n, times=100, batch = 10, proc = 10):
 # track2 = odeint(lorenz, (0.0, 1.01, 0.0), t, args=(10.0, 28.0, 3.0))
 
 # 绘图
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 plt.rcParams['font.sans-serif']=['SimHei'] #用来正常显示中文标签
 
