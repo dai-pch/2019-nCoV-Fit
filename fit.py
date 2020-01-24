@@ -405,7 +405,7 @@ def seir_draw(res, golden_ts, golden_vs):
 def sir_run():
     # a, b, s0, i0
     rg = [(0.0000001, 0.5, 0.0001), (0.0000001, 0.5, 0.0001), (1000, 100000, 10), (0.001, 10, 0.5)]
-    res = sir_fit(rg, 10)
+    res = sir_fit(rg, 80)
     print(res)
     for r in res:
         sir_draw(r, golden_ts, golden_vs)
@@ -427,7 +427,7 @@ def seir_run2():
 def main():
     # test_search()
     # res = [((0.00012969970703125, 0.0, 822.0977783203125), 2076.230989456712)]
-    sir_run()
+    # sir_run()
     # seir_run2()
     seir_run()
 
