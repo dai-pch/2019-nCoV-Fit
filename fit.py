@@ -289,9 +289,11 @@ def fit(func, rg, n):
     return mins
 
 # sir fit
+def sir_fit_func(a, b, s0, i0): 
+    return err(SIR((a, b)), (s0, i0, 0), golden_ts, golden_vs)
+
 def sir_fit(rg, n):
-    func = lambda a, b, s0, i0: err(SIR((a, b)), (s0, i0, 0), golden_ts, golden_vs)
-    return fit(func, rg, n)
+    return fit(sir_fit_func, rg, n)
     
 # seir fit
 def seir_fit_func(beta, sigma, gamma, s0, e0, i0): 
@@ -423,7 +425,7 @@ def seir_run2():
 def main():
     # test_search()
     # res = [((0.00012969970703125, 0.0, 822.0977783203125), 2076.230989456712)]
-    # sir_run()
+    sir_run()
     # seir_run2()
     seir_run()
 
