@@ -1,6 +1,6 @@
 from scipy.integrate import odeint
 from scipy.optimize import minimize
-from itertools import product
+from itertools import product, repeat
 from functools import reduce
 import math as mt
 from random import random
@@ -99,7 +99,7 @@ def solve(model, inits, t_max, points=5001):
 # s0 is the initial value of s.
 # golden_ts: [t0, t1, ..., tn]
 # golden_vs: [[i, r], ..., []]
-def err(model,inits, golden_ts, golden_vs):
+def err(model, inits, golden_ts, golden_vs):
     inits = tuple(map(abs, inits))
     points = 801
     t_max = max(golden_ts)
@@ -120,6 +120,27 @@ def err(model,inits, golden_ts, golden_vs):
         e = ei * ei + er * er
         err += e
     return err / (2*n)
+
+# find local minimum
+def find_local_minimum(array, proc):
+    sz = array.shape
+    with Pool(processes=proc) as pool:
+        cords = product(*tuple(map(lambda x: range(0, x - 1), sz)))
+        res = pool.starmap(is_local_minimum, zip(repeat(array), cords))
+    res = [e for e in res if e]
+    return res
+
+def is_local_minimum(array, cord):
+    sz = array.shape
+    for dim_id, xi in enumerate(cord):
+        if sz[dim_id] <= 2:
+            continue
+        cord_l = cord[0:dim_id] + tuple([xi - 1]) + cord[dim_id+1:]
+        cord_r = cord[0:dim_id] + tuple([xi + 1]) + cord[dim_id+1:]
+        if ((cord[dim_id] != 0 and array[cord] > array[cord_l]) 
+            or (array[cord] > array[cord_r])):
+            return []
+    return cord
 
 # optimization
 # para_ranges: [(para0_min, para0_max, err), 
@@ -169,21 +190,27 @@ def grid_search(target_func, para_ranges, n=10, proc=16):
     extremums += min_idxs
     extremum_errs += [err_grid[e] for e in min_idxs]
     # find other extremum
-    for grid in product(*tuple(map(lambda x: range(0, x - 1), para_cnts))):
-        flag = True
-        for dim_id, xi in enumerate(grid):
-            if para_cnts[dim_id] <= 2:
-                continue
-            neibour_grid_l = grid[0:dim_id] + tuple([xi - 1]) + grid[dim_id+1:]
-            # neibour_grid_l -= 1
-            neibour_grid_r = grid[0:dim_id] + tuple([xi + 1]) + grid[dim_id+1:]
-            # neibour_grid_r = grid
-            # neibour_grid_r[dim_id] += 1
-            if ((grid[dim_id] != 0 and err_grid[grid] > err_grid[neibour_grid_l]) 
-                or (err_grid[grid] > err_grid[neibour_grid_r])):
-                flag = False
-                break
-        if flag and not grid in extremums:
+    t = find_local_minimum(err_grid, proc)
+    # for grid in product(*tuple(map(lambda x: range(0, x - 1), para_cnts))):
+    #     flag = True
+    #     for dim_id, xi in enumerate(grid):
+    #         if para_cnts[dim_id] <= 2:
+    #             continue
+    #         neibour_grid_l = grid[0:dim_id] + tuple([xi - 1]) + grid[dim_id+1:]
+    #         # neibour_grid_l -= 1
+    #         neibour_grid_r = grid[0:dim_id] + tuple([xi + 1]) + grid[dim_id+1:]
+    #         # neibour_grid_r = grid
+    #         # neibour_grid_r[dim_id] += 1
+    #         if ((grid[dim_id] != 0 and err_grid[grid] > err_grid[neibour_grid_l]) 
+    #             or (err_grid[grid] > err_grid[neibour_grid_r])):
+    #             flag = False
+    #             break
+    #     if flag and not grid in extremums:
+    #         extremums.append(grid)
+    #         err = err_grid[grid]
+    #         extremum_errs.append(err)
+    for grid in t:
+        if not grid in extremums:
             extremums.append(grid)
             err = err_grid[grid]
             extremum_errs.append(err)
