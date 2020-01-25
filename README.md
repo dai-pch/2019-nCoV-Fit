@@ -16,7 +16,19 @@ y axis：people
 
 x axis：days (origin point is 2020-12-8)
 
-### 2020-01-25-10：28
+### 2020-01-25-23:53
+SIR model fittng:
+
+高预测：
+
+![SIR模型](https://github.com/dai-pch/2019-nCoV-Fit/raw/master/result/sir-2020-01-25-2353-hi.png)
+
+
+低预测：
+
+![SIR模型](https://github.com/dai-pch/2019-nCoV-Fit/raw/master/result/sir-2020-01-25-2353-low.png)
+
+### 2020-01-25-10:28
 SIR model fittng:
 
 高预测：
@@ -31,12 +43,12 @@ SIR model fittng:
 
 ![SIR模型](https://github.com/dai-pch/2019-nCoV-Fit/raw/master/result/sir-2020-01-25-1028-low.png)
 
-### 2020-01-25-02：07
+### 2020-01-25-02:07
 SIR model fittng:
 
 ![SIR模型](https://github.com/dai-pch/2019-nCoV-Fit/raw/master/result/sir-2020-01-25-0207.png)
 
-### 2020-01-24-11：57
+### 2020-01-24-11:57
 SIR model fittng:
 
 ![SIR模型](https://github.com/dai-pch/2019-nCoV-Fit/raw/master/result/sir-2020-01-24-1157.png)
