@@ -149,7 +149,7 @@ def is_local_minimum(array, cord):
 #               (paran_min, paran_max, err)] 
 # golden_ts, golden_vs is same to function sir_err
 def grid_search(target_func, para_ranges, n=10, proc=16):
-    seg_per_para = 8
+    seg_per_para = 16
     dim = len(para_ranges)
     para_lengths = [(para_ranges[i][1] - para_ranges[i][0]) for i in range(dim)]
     para_lefts = [para_ranges[i][0] for i in range(dim)]
@@ -258,17 +258,6 @@ def find_n_res(search_res, n):
 
 # data
 datas = [
-    (0, [1, 0]),
-    (0+23, [27, 0]),
-    (3+23, [44, 0]),
-    (5+23, [59, 0]),
-    (11+23, [59, 1]),
-    (12+23, [59, 1]),
-    (13+23, [59, 1]),
-    (14+23, [59, 1]),
-    (15+23, [59, 2]),
-    # (16, [45, 2]),
-    # (17, [63, 2]),
     (18+23, [122, 3]),
     (19+23, [199, 4]),
     (20+23, [291, 5]),
@@ -280,7 +269,7 @@ datas = [
     (25+23, [897+1076, 36+26]),
     (25+10.5/24+23, [1303+1965, 38+41])
 ]
-golden_ts = [datas[i][0] for i in range(len(datas))]
+golden_ts = [datas[i][0]-18-23 for i in range(len(datas))]
 golden_vs = [datas[i][1] for i in range(len(datas))]
 
 
@@ -291,8 +280,8 @@ def fit(func, rg, n):
     return mins
 
 # sir fit
-def sir_fit_func(a, b, s0, i0): 
-    return err(SIR((a, b)), (s0, i0, 0), golden_ts, golden_vs)
+def sir_fit_func(a, b, s0, i0, r0): 
+    return err(SIR((a, b)), (s0, i0, r0), golden_ts, golden_vs)
 
 def sir_fit(rg, n):
     return fit(sir_fit_func, rg, n)
@@ -362,8 +351,8 @@ import matplotlib.pyplot as plt
 plt.rcParams['font.sans-serif']=['SimHei'] #用来正常显示中文标签
 
 def sir_draw(res, golden_ts, golden_vs):
-    ((a, b, s0, i0), err) = res
-    sv, ts = solve(SIR((a, b)), (s0, i0, 0), 180, 10000)
+    ((a, b, s0, i0, r0), err) = res
+    sv, ts = solve(SIR((a, b)), (s0, i0, r0), 180, 10000)
     # fig = plt.figure()
     # ax = fig.add_axes()
     fig, ax = plt.subplots()
@@ -406,7 +395,7 @@ def seir_draw(res, golden_ts, golden_vs):
 
 def sir_run():
     # a, b, s0, i0
-    rg = [(0.0000001, 0.5, 0.0001), (0.0000001, 0.5, 0.0001), (1000, 100000, 10), (0.001, 10, 0.5)]
+    rg = [(0.0000001, 10, 0.0001), (0.0000001, 0.5, 0.0001), (1000, 1000000, 10), (1, 10000, 0.5), (3, 100, 0.5)]
     res = sir_fit(rg, 80)
     print(res)
     for r in res:
@@ -431,7 +420,7 @@ def main():
     # res = [((0.00012969970703125, 0.0, 822.0977783203125), 2076.230989456712)]
     sir_run()
     # seir_run2()
-    seir_run()
+    # seir_run()
 
 
 if __name__ == "__main__":
