@@ -16,6 +16,11 @@ y axis：people
 
 x axis：days (origin point is 2020-12-8)
 
+### 2020-01-25-01:01
+SIR model fittng:
+
+![SIR模型](https://github.com/dai-pch/2019-nCoV-Fit/raw/master/result/sir-2020-01-25-0101.png)
+
 ### 2020-01-25-23:53
 SIR model fittng:
 
