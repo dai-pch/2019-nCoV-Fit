@@ -115,8 +115,14 @@ def err(model, inits, golden_ts, golden_vs):
     n = len(golden_ts)
     err = 0
     for ii in range(n):
-        ei = model.get_i(outs[ii]) - golden_vs[ii][0]
-        er = model.get_r(outs[ii]) - golden_vs[ii][1]
+        if golden_vs[ii][0] is None:
+            ei = 0
+        else:
+            ei = model.get_i(outs[ii]) - golden_vs[ii][0]
+        if golden_vs[ii][1] is None:
+            er = 0
+        else:
+            er = model.get_r(outs[ii]) - golden_vs[ii][1]
         e = ei * ei + er * er
         err += e
     return err / (2*n)
@@ -148,7 +154,7 @@ def is_local_minimum(array, cord):
 #               ..., 
 #               (paran_min, paran_max, err)] 
 # golden_ts, golden_vs is same to function sir_err
-def grid_search(target_func, para_ranges, n=10, proc=16):
+def grid_search(target_func, para_ranges, n=10, proc=18):
     seg_per_para = 8
     dim = len(para_ranges)
     para_lengths = [(para_ranges[i][1] - para_ranges[i][0]) for i in range(dim)]
@@ -260,36 +266,36 @@ def find_n_res(search_res, n):
 # start from 21, Jan.
 datas = [
     (0, [1, 0]),
-    (3, [2, ]),
-    (5, [5, ]),
-    (9, [6, ]),
-    (10, [7, ]),
-    (11, [8, ]),
-    (12, [11, ]),
-    (15, [12, ]),
-    (20, [13, ]),
-    (22, [14, ]),
-    (23, [15, ]),
-    (28, [16, ]),
-    (30, [17, ]),
-    (31, [35, ]),
-    (34, [53, ]),
-    (35, [57, ]),
-    (36, [59, ]),
-    (37, [60, ]),
-    (38, [66, ]),
-    (39, [71, ]),
-    (40, [91, ]),
-    (41, [109, ]),
-    (42, [132, ]),
-    (43, [164, ]),
-    (44, [238, ]),
-    (45, [346, ]),
-    (46, [462, ]),
-    (47, [584, ]),
-    (48, [764, ]),
-    (49, [1054, ]),
-    (50, [1351, ]),
+    (3, [2, None]),
+    (5, [5, None]),
+    (9, [6, None]),
+    (10, [7, None]),
+    (11, [8, None]),
+    (12, [11, None]),
+    (15, [12, None]),
+    (20, [13, None]),
+    (22, [14, None]),
+    (23, [15, None]),
+    (28, [16, None]),
+    (30, [17, None]),
+    (31, [35, None]),
+    (34, [53, None]),
+    (35, [57, None]),
+    (36, [59, None]),
+    (37, [60, None]),
+    (38, [66, None]),
+    (39, [71, None]),
+    (40, [91, None]),
+    (41, [109, None]),
+    (42, [132, None]),
+    (43, [164, None]),
+    (44, [238, None]),
+    (45, [346, None]),
+    (46, [462, None]),
+    (47, [584, None]),
+    (48, [764, None]),
+    (49, [1054, None]),
+    (50, [1351, None]),
     (51, [1374, 53]),
 ]
 golden_ts = [datas[i][0] for i in range(len(datas))]
